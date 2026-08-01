@@ -1,0 +1,75 @@
+# ==============================================================================
+# DecisionForge AI - Git Ignore Configurations
+# ==============================================================================
+
+# IDE / System files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Environment Variables & Secrets
+.env
+.env.local
+.env.production
+.env.development
+.env.staging
+.env.*.local
+
+# Databases (Local execution caches)
+*.db
+*.sqlite
+backend/decisionforge.db
+
+# Python (Backend Dev Stack)
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+env/
+.pytest_cache/
+.coverage
+htmlcov/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Node / Vite (Frontend Dev Stack)
+node_modules/
+frontend/node_modules/
+jspm_packages/
+web_modules/
+.npm/
+.eslintcache
+.parcel-cache
+.cache/
+frontend/dist/
+dist/
+out/
+.vite/
+.astro/
+.next/
+.nuxt/
+.docusaurus/
+.svelte-kit/
