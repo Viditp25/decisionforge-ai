@@ -58,19 +58,33 @@ class OptimizationService:
         try:
             if model.model_type == "VRP":
                 # Extract VRP attributes from dataset
-                distance_matrix = dataset.content.get("distance_matrix")
-                num_vehicles = model.parameters.get("num_vehicles", 1)
-                depot = model.parameters.get("depot", 0)
+                distance_matrix = dataset.content.get("distance_matrix") or dataset.content.get("distances")
+                num_vehicles = model.parameters.get("num_vehicles") or model.configuration.get("num_vehicles") or 1
+                depot = model.parameters.get("depot") or dataset.content.get("depot") or 0
                 demands = dataset.content.get("demands")
+                
+                if not demands and "locations" in dataset.content:
+                    demands = [int(loc.get("demand", 0)) for loc in dataset.content["locations"]]
+                
                 capacities = model.parameters.get("vehicle_capacities")
+                if not capacities:
+                    capacity_limit = model.configuration.get("capacity_limit") or model.parameters.get("capacity_limit")
+                    if capacity_limit:
+                        capacities = [int(capacity_limit)] * num_vehicles
 
                 if not distance_matrix:
-                    raise ValueError("Dataset content is missing 'distance_matrix' for VRP.")
+                    raise ValueError("Dataset content is missing 'distance_matrix' or 'distances' for VRP.")
+
+                # Convert distance matrix to integers to satisfy OR-Tools index manager constraints
+                int_distance_matrix = []
+                for row in distance_matrix:
+                    int_row = [int(round(float(val))) for val in row]
+                    int_distance_matrix.append(int_row)
 
                 solver_res = OptimizationEngine.solve_vrp(
-                    distance_matrix=distance_matrix,
-                    num_vehicles=num_vehicles,
-                    depot=depot,
+                    distance_matrix=int_distance_matrix,
+                    num_vehicles=int(num_vehicles),
+                    depot=int(depot),
                     demands=demands,
                     vehicle_capacities=capacities
                 )
