@@ -33,7 +33,4 @@ services:
         destination: /index.html
     envVars:
       - key: VITE_API_URL
-        fromService:
-          name: decisionforge-backend
-          type: web
-          property: url
+        sync: false  # User provides the backend public URL (e.g., https://decisionforge-backend.onrender.com)
