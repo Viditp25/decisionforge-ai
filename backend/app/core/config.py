@@ -5,10 +5,17 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing_extensions import Annotated
 
 
+import json
+
 def parse_cors(v: Union[str, List[str]]) -> List[str]:
-    if isinstance(v, str) and not v.startswith("["):
+    if isinstance(v, str):
+        if v.startswith("["):
+            try:
+                return json.loads(v)
+            except Exception:
+                pass
         return [i.strip() for i in v.split(",")]
-    elif isinstance(v, (list, str)):
+    elif isinstance(v, list):
         return v
     raise ValueError(v)
 
@@ -47,7 +54,7 @@ class Settings(BaseSettings):
 
     # CORS Origins
     BACKEND_CORS_ORIGINS: Annotated[
-        List[str], BeforeValidator(parse_cors)
+        Union[List[str], str], BeforeValidator(parse_cors)
     ] = ["http://localhost:3000", "http://127.0.0.1:3000"]
 
     # OpenAI API Key
