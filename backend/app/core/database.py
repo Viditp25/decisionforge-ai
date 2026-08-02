@@ -9,13 +9,18 @@ from app.core.config import settings
 def compile_jsonb_sqlite(element, compiler, **kw):
     return "JSON"
 
-# Create database engine with async pg driver
+# Create database engine with async driver
+engine_kwargs = {
+    "echo": False,
+    "pool_pre_ping": True,
+}
+if not settings.DATABASE_URL.startswith("sqlite"):
+    engine_kwargs["pool_size"] = 10
+    engine_kwargs["max_overflow"] = 20
+
 engine = create_async_engine(
     settings.DATABASE_URL,
-    echo=False,
-    pool_pre_ping=True,
-    pool_size=10,
-    max_overflow=20,
+    **engine_kwargs
 )
 
 # Async session maker

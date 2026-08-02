@@ -204,5 +204,41 @@ Follow these steps to demonstrate the platform's core workflow:
 
 ---
 
+---
+
+## 🚀 Production Deployment (Render Free Tier)
+
+DecisionForge AI is production-ready and configured to be deployed on **Render** completely for free using the provided **`render.yaml`** Blueprint.
+
+### 📦 Services Provisioned:
+1.  **FastAPI Backend**: Deployed as a Free Docker Web Service.
+2.  **React Frontend**: Deployed as a Free Static Site (Vite) with CDN distribution.
+
+---
+
+### 1. Database Provisioning (Neon PostgreSQL)
+Since Render's free PostgreSQL tier expires after 90 days, we recommend using **[Neon.tech](https://neon.tech/)** for a permanent, free PostgreSQL instance:
+1.  Sign up for a free account at [Neon](https://neon.tech/).
+2.  Create a project and database (e.g., `decisionforge`).
+3.  Copy the connection string (it will look like `postgresql://alex:password@ep-cool-snowflake-123456.us-east-2.aws.neon.tech/decisionforge?sslmode=require`).
+4.  No manual table creation or migration is needed! The backend automatically creates database mappers and tables on startup.
+
+---
+
+### 2. Render One-Click Deployment
+1.  Push this repository to your GitHub account.
+2.  Go to the **[Render Dashboard](https://dashboard.render.com)**.
+3.  Click **New** (top right) and select **Blueprint**.
+4.  Connect your GitHub repository.
+5.  Render will automatically parse the **`render.yaml`** blueprint from the repository root.
+6.  Fill in the required blueprint parameters:
+    *   `DATABASE_URL`: Paste your Neon connection string. (The backend will automatically convert it to async `postgresql+asyncpg://` compatibility at runtime).
+    *   `JWT_SECRET`: Leave blank (Render will auto-generate a secure random key).
+    *   `BACKEND_CORS_ORIGINS`: Set to `*` or the public URL of your frontend static site.
+    *   `OPENAI_API_KEY`: Set your OpenAI key, or use `mock-key` for offline template fallback.
+7.  Click **Approve** to deploy both the backend and frontend services!
+
+---
+
 ## 📄 License
 This project is licensed under the terms of the [MIT License](LICENSE).

@@ -1,0 +1,11 @@
+.git
+.github
+.pytest_cache
+node_modules
+.venv
+venv
+*.db
+*.log
+dist
+.output
+.wxt

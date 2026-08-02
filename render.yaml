@@ -1,0 +1,35 @@
+services:
+  # 1. FastAPI Backend (Docker Web Service)
+  - type: web
+    name: decisionforge-backend
+    env: docker
+    plan: free
+    dockerContext: backend
+    dockerfilePath: backend/Dockerfile
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: DATABASE_URL
+        sync: false  # User provides Neon or Render database URL
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_ALGORITHM
+        value: HS256
+      - key: BACKEND_CORS_ORIGINS
+        value: "*"  # Safe CORS wildcard origin handled in main.py
+      - key: OPENAI_API_KEY
+        value: mock-key
+
+  # 2. React Frontend (Vite Static Site)
+  - type: web
+    name: decisionforge-frontend
+    env: static
+    plan: free
+    buildCommand: "cd frontend && npm install && npm run build"
+    publishPath: "frontend/dist"
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          name: decisionforge-backend
+          type: web
+          property: url
