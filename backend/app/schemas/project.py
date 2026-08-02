@@ -10,7 +10,7 @@ class ProjectBase(BaseModel):
 
 
 class ProjectCreate(ProjectBase):
-    team_id: UUID
+    team_id: Optional[UUID] = None
 
 
 class ProjectUpdate(BaseModel):

@@ -17,9 +17,26 @@ async def create_project(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(require_role(["Owner", "Admin", "Editor"])),
 ):
+    from app.models.org import Team
+    from sqlalchemy import select
+
     project_repo = ProjectRepository(db)
     obj_data = req.model_dump()
     obj_data["organization_id"] = current_user.organization_id
+    
+    if not obj_data.get("team_id"):
+        # Resolve the default team for this organization
+        result = await db.execute(
+            select(Team).filter(Team.organization_id == current_user.organization_id).limit(1)
+        )
+        team = result.scalar_one_or_none()
+        if not team:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="No default team found for this organization to link the project"
+            )
+        obj_data["team_id"] = team.id
+
     project = await project_repo.create(obj_in=obj_data)
     await db.commit()
     return project
