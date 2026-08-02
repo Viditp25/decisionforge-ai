@@ -178,11 +178,19 @@ DecisionForge AI supports two execution modes for compiling solver descriptions:
 
 ## 📸 Screenshots
 The platform features a modern, responsive, glassmorphic UI designed for dark mode:
-- **Dashboard View**: Shows KPIs, recent executions, and a Recharts timeline charting active solver latencies.
-- **Models View**: Interactive forms to configure constraints and parameters.
-- **Executions View**: Real-time polling list showing active runs, their objective values, and a details modal hosting the AI-generated markdown explanation.
 
-*Place visual mockups and dashboard captures in the `docs/assets/` directory.*
+### 1. Dashboard View
+Shows KPIs, recent executions, and a Recharts timeline charting active solver latencies.
+![Dashboard Screenshot](./docs/assets/dashboard_screenshot.png)
+
+### 2. Optimization Run
+Interactive forms to configure constraints and parameters, alongside runs log tables showing status.
+![Optimization Run Screenshot](./docs/assets/optimization_run_screenshot.png)
+
+### 3. AI Explanation
+Real-time details modal hosting the AI-generated markdown explanation for vehicle routing paths.
+![AI Explanation Screenshot](./docs/assets/ai_explanation_screenshot.png)
+
 
 ---
 
