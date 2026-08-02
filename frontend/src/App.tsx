@@ -31,11 +31,11 @@ export default function App() {
       if (dsRes.ok) setDatasets(await dsRes.json());
 
       // Fetch Optimization Models
-      const optRes = await fetch(`${API_URL}/api/v1/optimization/models/${projectId}`, { headers });
+      const optRes = await fetch(`${API_URL}/api/v1/optimization/models/project/${projectId}`, { headers });
       if (optRes.ok) setOptModels(await optRes.json());
 
       // Fetch Simulation Models
-      const simRes = await fetch(`${API_URL}/api/v1/simulation/models/${projectId}`, { headers });
+      const simRes = await fetch(`${API_URL}/api/v1/simulation/models/project/${projectId}`, { headers });
       if (simRes.ok) setSimModels(await simRes.json());
 
       // Fetch Runs
